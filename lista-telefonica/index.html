@@ -2,15 +2,20 @@
 	<head>
 		<title>Lista Telefonica</title>
 		<link rel="stylesheet" href="lib/bootstrap/bootstrap.css">
+		<link rel="stylesheet" href="style.css">
 		<script src="lib/angular/angular.min.js"></script>
 		<script>
 			angular.module("listaTelefonica", []);
 			angular.module("listaTelefonica").controller("listaTelefonicaCtrl", function ($scope) {
-				
+					$scope.app = "Lista Telefonica";
 			});
 		</script>
 	</head>
 	<body ng-controller="listaTelefonicaCtrl">
-		
+		<div class="jumbotron jumbo">
+			<div class="container">
+				<h3>{{ app }}</h3>	
+			</div>
+		</div>
 	</body>
 </html>
