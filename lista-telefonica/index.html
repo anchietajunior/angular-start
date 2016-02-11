@@ -60,11 +60,13 @@
 					</tr>
 				</table>
 				<hr/>
-				<input class="form-control" type="text" ng-model="contato.nome">
-				<input class="form-control" type="text" ng-model="contato.email">
-				<select class="form-control" ng-model="contato.operadora" ng-options="operadora.nome for operadora in operadoras">
-					<option value="">Selecione uma Operadora</option>
-				</select>
+				<form name="contatoForm">
+					<input class="form-control" type="text" ng-model="contato.nome" ng-required="true">
+					<input class="form-control" type="text" ng-model="contato.email" ng-required="true">
+					<select class="form-control" ng-model="contato.operadora" ng-options="operadora.nome for operadora in operadoras">
+						<option value="">Selecione uma Operadora</option>
+					</select>
+				</form>
 				<button class="btn btn-primary btn-block" 
 				ng-click="adicionarContato(contato)" 
 				ng-disabled="!contato.nome || !contato.email">Add</button>
