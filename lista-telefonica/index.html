@@ -37,7 +37,9 @@
 
 				<input class="form-control" type="text" ng-model="contato.nome">
 				<input class="form-control" type="text" ng-model="contato.email">
-				<button class="btn btn-primary btn-block" ng-click="adicionarContato(contato)">Add</button>
+				<button class="btn btn-primary btn-block" 
+				ng-click="adicionarContato(contato)" 
+				ng-disabled="!contato.nome || !contato.email">Add</button>
 				{{contato}}
 			</div>
 		</div>
