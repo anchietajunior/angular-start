@@ -15,3 +15,9 @@ body {
 .btn {
 	margin-bottom: 20px;
 }
+.selecionado {
+	background-color: yellow;
+}
+.negrito {
+	font-weight: bold;
+}
