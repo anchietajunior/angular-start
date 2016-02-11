@@ -30,6 +30,12 @@
 							if(!contato.selecionado) return contato;
 						});
 					};
+					$scope.isContatoSelecionado = function (contatos) {
+						return contatos.some(function (contato) {
+							return contato.selecionado;
+						});
+						console.log(isContatoSelecionado);
+					};
 			});
 		</script>
 	</head>
@@ -61,7 +67,7 @@
 				ng-click="adicionarContato(contato)" 
 				ng-disabled="!contato.nome || !contato.email">Add</button>
 				<button class="btn btn-danger btn-block" 
-				ng-click="apagarContato(contatos)">Apagar Contato</button>
+				ng-click="apagarContato(contatos)" ng-disabled="!isContatoSelecionado(contatos)">Apagar Contato</button>
 			</div>
 		</div>
 	</body>

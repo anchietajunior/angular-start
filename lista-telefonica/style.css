@@ -16,7 +16,7 @@ body {
 	margin-bottom: 20px;
 }
 .selecionado {
-	background-color: yellow;
+	background-color: #999;
 }
 .negrito {
 	font-weight: bold;
