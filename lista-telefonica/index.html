@@ -8,6 +8,15 @@
 			angular.module("listaTelefonica", []);
 			angular.module("listaTelefonica").controller("listaTelefonicaCtrl", function ($scope) {
 					$scope.app = "Lista Telefonica";
+					$scope.contatos = [
+						{nome: "Anchieta", email: "anchieta@site.com.br"},
+						{nome: "Natan", email: "natan@site.com.br"},
+						{nome: "Victor", email: "victor@site.com.br"}
+					];
+					$scope.adicionarContato = function (contato) {
+						$scope.contatos.push(angular.copy(contato));
+						delete $scope.contato;
+					};
 			});
 		</script>
 	</head>
@@ -15,6 +24,21 @@
 		<div class="jumbotron jumbo">
 			<div class="container">
 				<h3>{{ app }}</h3>	
+				<table class="table table-striped">
+					<tr>
+						<th>Nome</th>
+						<th>E-mail</th>
+					</tr>
+					<tr ng-repeat="contato in contatos">
+						<td>{{ contato.nome }}</td>
+						<td>{{ contato.email }}</td>
+					</tr>
+				</table>
+
+				<input class="form-control" type="text" ng-model="contato.nome">
+				<input class="form-control" type="text" ng-model="contato.email">
+				<button class="btn btn-primary btn-block" ng-click="adicionarContato(contato)">Add</button>
+				{{contato}}
 			</div>
 		</div>
 	</body>
