@@ -1,17 +1,19 @@
 <html ng-app="listaTelefonica">
 	<head>
+		<meta charset="UTF-8">
 		<title>Lista Telefonica</title>
 		<link rel="stylesheet" href="lib/bootstrap/bootstrap.css">
 		<link rel="stylesheet" href="style.css">
 		<script src="lib/angular/angular.min.js"></script>
+		<script src="lib/angular/angular-messages.js"></script>
 		<script>
-			angular.module("listaTelefonica", []);
+			angular.module("listaTelefonica", ["ngMessages"]);
 			angular.module("listaTelefonica").controller("listaTelefonicaCtrl", function ($scope) {
 					$scope.app = "Lista Telefonica";
 					$scope.contatos = [
-						{nome: "Anchieta", email: "anchieta@site.com.br", cor: "yellow"},
-						{nome: "Natan", email: "natan@site.com.br", cor: "blue"},
-						{nome: "Victor", email: "victor@site.com.br", cor: "green"}
+						{nome: "Anchieta", email: "anchieta@site.com.br", telefone: "9292-9292", cor: "yellow"},
+						{nome: "Natan", email: "natan@site.com.br", telefone: "9898-9898", cor: "blue"},
+						{nome: "Victor", email: "victor@site.com.br", telefone: "9494-9494", cor: "green"}
 					];
 					$scope.operadoras = [
 						{nome: "Oi", codigo: 14, categoria: "Celular"},
@@ -22,6 +24,7 @@
 					$scope.adicionarContato = function (contato) {
 						$scope.contatos.push(angular.copy(contato));
 						delete $scope.contato;
+						$scope.contatoForm.$setPristine();
 					};
 					$scope.apagarContato = function (contatos) {
 						$scope.contatos = contatos.filter(function (contato){
@@ -45,30 +48,44 @@
 						<th></th>
 						<th>Nome</th>
 						<th>E-mail</th>
+						<th>Telefone</th>
 						<th>Operadora</th>
 						<th></th>
 					</tr>
 					<tr ng-class="{'selecionado negrito': contato.selecionado}" ng-repeat="contato in contatos">
 						<td><input type="checkbox" ng-model="contato.selecionado"></td>
-						<td>{{ contato.nome }}</td>
+						<td>{{ contato.nome | uppercase }}</td>
 						<td>{{ contato.email }}</td>
+						<td>{{ contato.telefone }}</td>
 						<td>{{ contato.operadora.nome }}</td>
 						<td><div style="width: 20px; height: 20px;" ng-style="{'background-color': contato.cor}"></div></td>
 					</tr>
 				</table>
 				<hr/>
 				<form name="contatoForm">
-					<input class="form-control" type="text" name="nome" ng-model="contato.nome" ng-required="true">
-					<input class="form-control" type="text" name="email" ng-model="contato.email" ng-required="true">
+					<input class="form-control" placeholder="nome" type="text" name="nome" ng-model="contato.nome" ng-required="true" ng-minlength="4">
+					<input class="form-control" placeholder="email" type="text" name="email" ng-model="contato.email" ng-required="true">
+					<input class="form-control" placeholder="telefone" type="text" name="telefone" ng-model="contato.telefone" ng-required="true" ng-pattern="/^\d{4,5}-\d{4}$/">
 					<select class="form-control" ng-model="contato.operadora" ng-options="operadora.nome for operadora in operadoras">
 						<option value="">Selecione uma Operadora</option>
 					</select>
 				</form>
-				<div ng-show="contatoForm.nome.$invalid && contatoForm.nome.$dirty" class="alert alert-danger">
-					Por favor, preencha nome.
+
+				<div ng-messages="contatoForm.nome.$error" class="alert alert-danger">
+					<div ng-message="required">
+						Por favor, preencha nome.
+					</div>
+					<div ng-message="minlength">
+						O campo nome deve ter no mínimo 4 caracteres.
+					</div>	
 				</div>
+
+				
 				<div ng-show="contatoForm.email.$invalid && contatoForm.email.$dirty" class="alert alert-danger">
 					Por favor, preencha email.
+				</div>
+				<div ng-show="contatoForm.telefone.$error.pattern" class="alert alert-danger">
+					O campo telefone deve estar no formato DDDDD-DDDD.
 				</div>
 				<button class="btn btn-primary btn-block" 
 				ng-click="adicionarContato(contato)" 
