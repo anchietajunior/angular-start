@@ -16,8 +16,6 @@
 					$scope.operadoras = [
 						{nome: "Oi", codigo: 14, categoria: "Celular"},
 						{nome: "Vivo", codigo: 15, categoria: "Celular"},
-						{nome: "Tim", codigo: 41, categoria: "Celular"},
-						{nome: "Claro", codigo: 41, categoria: "Celular"},
 						{nome: "GVT", codigo: 25, categoria: "Fixo"},
 						{nome: "Embratel", codigo: 21, categoria: "Fixo"}
 					];
@@ -34,7 +32,6 @@
 						return contatos.some(function (contato) {
 							return contato.selecionado;
 						});
-						console.log(isContatoSelecionado);
 					};
 			});
 		</script>
@@ -61,15 +58,21 @@
 				</table>
 				<hr/>
 				<form name="contatoForm">
-					<input class="form-control" type="text" ng-model="contato.nome" ng-required="true">
-					<input class="form-control" type="text" ng-model="contato.email" ng-required="true">
+					<input class="form-control" type="text" name="nome" ng-model="contato.nome" ng-required="true">
+					<input class="form-control" type="text" name="email" ng-model="contato.email" ng-required="true">
 					<select class="form-control" ng-model="contato.operadora" ng-options="operadora.nome for operadora in operadoras">
 						<option value="">Selecione uma Operadora</option>
 					</select>
 				</form>
+				<div ng-show="contatoForm.nome.$invalid && contatoForm.nome.$dirty" class="alert alert-danger">
+					Por favor, preencha nome.
+				</div>
+				<div ng-show="contatoForm.email.$invalid && contatoForm.email.$dirty" class="alert alert-danger">
+					Por favor, preencha email.
+				</div>
 				<button class="btn btn-primary btn-block" 
 				ng-click="adicionarContato(contato)" 
-				ng-disabled="!contato.nome || !contato.email">Add</button>
+				ng-disabled="contatoForm.$invalid">Add</button>
 				<button class="btn btn-danger btn-block" 
 				ng-click="apagarContato(contatos)" ng-if="isContatoSelecionado(contatos)">Apagar Contato</button>
 			</div>
