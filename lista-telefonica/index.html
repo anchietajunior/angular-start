@@ -3,50 +3,19 @@
 		<meta charset="UTF-8">
 		<title>Lista Telefonica</title>
 		<link rel="stylesheet" href="lib/bootstrap/bootstrap.css">
-		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="css/app.css">
 		<script src="lib/angular/angular.min.js"></script>
+		<script src="lib/angular/angular-locale_pt-br.js"></script>
 		<script src="lib/angular/angular-messages.js"></script>
-		<script>
-			angular.module("listaTelefonica", ["ngMessages"]);
-			angular.module("listaTelefonica").controller("listaTelefonicaCtrl", function ($scope) {
-					$scope.app = "Lista Telefonica";
-					$scope.contatos = [
-						{nome: "Anchieta", operadora: {nome: "Oi", codigo: 14, categoria: "Celular"}, telefone: "9292-9292", data: new Date()},
-						{nome: "Natan", operadora: {nome: "Vivo", codigo: 15, categoria: "Celular"}, telefone: "9898-9898", data: new Date()},
-						{nome: "Victor", operadora: {nome: "Vivo", codigo: 15, categoria: "Celular"}, telefone: "9494-9494", data: new Date()}
-					];
-					$scope.operadoras = [
-						{nome: "Oi", codigo: 14, categoria: "Celular"},
-						{nome: "Vivo", codigo: 15, categoria: "Celular"},
-						{nome: "GVT", codigo: 25, categoria: "Fixo"},
-						{nome: "Embratel", codigo: 21, categoria: "Fixo"}
-					];
-					$scope.adicionarContato = function (contato) {
-						$scope.contatos.push(angular.copy(contato));
-						delete $scope.contato;
-						$scope.contatoForm.$setPristine();
-					};
-					$scope.apagarContato = function (contatos) {
-						$scope.contatos = contatos.filter(function (contato){
-							if(!contato.selecionado) return contato;
-						});
-					};
-					$scope.isContatoSelecionado = function (contatos) {
-						return contatos.some(function (contato) {
-							return contato.selecionado;
-						});
-					};
-					$scope.ordenarPor = function (campo) {
-						$scope.criterioDeOrdenacao = campo;
-						$scope.direcaoDaOrdenacao = !$scope.direcaoDaOrdenacao;
-					};
-			});
-		</script>
+		<script src="js/app.js"></script>
+		<script src="js/controllers/listaTelefonicaCtrl.js"></script>
 	</head>
+	
 	<body ng-controller="listaTelefonicaCtrl">
 		<div class="jumbotron jumbo">
 			<div class="container">
 				<h3>{{ app }}</h3>	
+				{{ message }}
 				<input type="text" class="form-control" ng-model="criterioDeBusca" placeholder="O que você procura?">
 				<table ng-show="contatos.length > 0" class="table">
 					<tr>
@@ -58,7 +27,7 @@
 					</tr>
 					<tr ng-class="{'selecionado negrito': contato.selecionado}" ng-repeat="contato in contatos | filter:criterioDeBusca | orderBy:criterioDeOrdenacao:direcaoDaOrdenacao">
 						<td><input type="checkbox" ng-model="contato.selecionado"></td>
-						<td>{{ contato.nome | uppercase }}</td>
+						<td>{{ contato.nome }}</td>
 						<td>{{ contato.telefone }}</td>
 						<td>{{ contato.operadora.nome | lowercase }}</td>
 						<td>{{ contato.data | date:'dd/MM/yyyy' }}</td>
@@ -68,7 +37,7 @@
 				<form name="contatoForm">
 					<input class="form-control" placeholder="nome" type="text" name="nome" ng-model="contato.nome" ng-required="true" ng-minlength="4">
 					<input class="form-control" placeholder="telefone" type="text" name="telefone" ng-model="contato.telefone" ng-required="true" ng-pattern="/^\d{4,5}-\d{4}$/">
-					<select class="form-control" ng-model="contato.operadora" ng-options="operadora.nome for operadora in operadoras | orderBy:'nome'">
+					<select class="form-control" ng-model="contato.operadora" ng-options="operadora.nome + ' (' + ( operadora.preco | currency ) + ') ' for operadora in operadoras | orderBy:'nome'">
 						<option value="">Selecione uma Operadora</option>
 					</select>
 				</form>
@@ -93,6 +62,6 @@
 				ng-click="apagarContato(contatos)" ng-if="isContatoSelecionado(contatos)">Apagar Contato</button>
 			</div>
 		</div>
-
+		<div ng-include="view/footer.html"></div>
 	</body>
 </html>
